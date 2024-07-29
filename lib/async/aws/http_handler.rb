@@ -25,9 +25,9 @@ module Async
         req = context.http_request
         resp = context.http_response
         endpoint = self.class.endpoint_for(req.endpoint)
+        client = self.class.client_for(endpoint)
 
-        begin
-          client = self.class.client_for(endpoint)
+        Sync do
           headers = ::Protocol::HTTP::Headers.new(
             req.headers.reject do |k, v|
               k == 'host' || k == 'content-length'
